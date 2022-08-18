@@ -1,0 +1,15 @@
+{
+    "java.configuration.updateBuildConfiguration": "automatic",
+    "maven.view": "hierarchical",
+    "java.configuration.runtimes": [
+        {
+            "name": "JavaSE-1.8",
+            "path": "C:\\JAVA\\JDK\\Zulu\\zulu-8",
+            "default": true
+        },
+        {
+            "name": "JavaSE-11",
+            "path": "C:\\JAVA\\JDK\\Zulu\\zulu-11"
+        }
+    ]
+}
