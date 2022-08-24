@@ -1,0 +1,16 @@
+<component name="ArtifactManager">
+  <artifact type="exploded-ear" name="Out">
+    <output-path>$PROJECT_DIR$/out/artifacts/Out</output-path>
+    <root id="root">
+      <element id="directory" name="lib">
+        <element id="library" level="project" name="Maven: com.microsoft.sqlserver:mssql-jdbc:10.2.1.jre8" />
+        <element id="library" level="project" name="Maven: org.apache.logging.log4j:log4j-api:2.17.2" />
+        <element id="library" level="project" name="Maven: org.apache.logging.log4j:log4j-core:2.17.2" />
+        <element id="library" level="project" name="Maven: org.apache.logging.log4j:log4j-slf4j-impl:2.17.2" />
+        <element id="library" level="project" name="Maven: org.mybatis:mybatis:3.5.10" />
+        <element id="library" level="project" name="Maven: org.slf4j:slf4j-api:1.7.25" />
+      </element>
+      <element id="module-output" name="Mongate" />
+    </root>
+  </artifact>
+</component>
