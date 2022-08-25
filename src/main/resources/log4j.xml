@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE log4j:configuration PUBLIC "-//APACHE//DTD LOG4J 1.2//EN" "log4j.dtd">
+<log4j:configuration>
+    <!-- Appenders -->
+    <appender name="Console" class="org.apache.log4j.ConsoleAppender">
+		<param name="Threshold" value="DEBUG"/>
+        <param name="Target" value="System.out" />
+        <layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern" value="%5p : %d{yyyy-MM-dd HH:mm:ss} - %c{2} (%13F:%L:%M) - %m%n" />
+        </layout>
+    </appender>
+    
+    <appender name="Log_ToFILE" class="org.apache.log4j.DailyRollingFileAppender">
+        <param name="Threshold" value="DEBUG"/>
+        <param name="File" value="E:\\log\\mongate.log" />
+        <param name="Append" value="true" />
+        <param name="DatePattern" value="'.'yyyy-MM-dd" />
+        <layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern" value="%5p : %d{yyyy-MM-dd HH:mm:ss} - %c{2} (%13F:%L:%M) - %m%n"/>
+        </layout>
+    </appender>
+
+    <appender name="Log_ToDB" class="com.cnet.crec.util.ExJdbcAppender">
+		<param name="Threshold" value="ERROR"/>
+		<!-- POSTGRE DB    
+        <param name="URL" value="jdbc:postgresql://192.168.0.24:5432/crec_2018" />
+        <param name="driver" value="org.postgresql.Driver" />
+        <param name="user" value="cnet" />
+        <param name="password" value="~!cnet2580!~" />
+        -->
+		
+        <!-- MSSQL DB  
+        <param name="URL" value="jdbc:jtds:sqlserver://192.168.0.24:1433/crec_2018;useUnicode=false;SENDSTRINGPARAMETERSASUNICODE=false;uselobs=false;" />
+        <param name="driver" value="net.sourceforge.jtds.jdbc.Driver" />
+        <param name="user" value="sa" />
+        <param name="password" value="~!cnet2580!~" />
+        -->
+		<!-- Oracle DB   
+        <param name="URL" value="jdbc:oracle:thin:@10.144.31.24:1521:RECDB" />
+        <param name="driver" value="oracle.jdbc.driver.OracleDriver" />
+        <param name="user" value="cnet" />
+        <param name="password" value="~!cnet2580!~" />
+		
+		<layout class="org.apache.log4j.EnhancedPatternLayout">
+			<param name="ConversionPattern" value="EXEC sp_InsertErrorLog '%5p', '%c{2}', '%M', '%13F:%L', '%m%n'"/>
+		</layout>
+        -->
+    </appender>
+
+    <!-- Application Loggers -->
+    <logger name="com.cnettech">
+        <level value="DEBUG" />     
+    </logger>
+      
+    <!-- JDBC, mybatis Log -->
+    <logger name="org.apache.ibatis">
+        <level value="DEBUG"/>   
+    </logger>
+    <logger name="org.apache.tomcat.jdbc">
+        <level value="DEBUG"/>
+    </logger>
+    <logger name="com.microsoft.sqlserver.jdbc">
+        <level value="DEBUG"/>
+    </logger>
+    <logger name="net.sourceforge.jtds.jdbc">
+        <level value="DEBUG"/>
+    </logger>	
+    <logger name="java.sql.Connection">
+        <level value="DEBUG"/>
+    </logger>
+    <logger name="java.sql.Statement">
+        <level value="DEBUG"/>
+    </logger>
+    <logger name="java.sql.PreparedStatement">
+        <level value="DEBUG"/>
+    </logger>
+    <logger name="java.sql.ResultSet">
+        <level value="DEBUG"/>
+    </logger> 
+         
+    <!-- Root Logger -->
+    <root>
+        <priority value="DEBUG"/>
+        <appender-ref ref="Console"/>
+        <appender-ref ref="Log_ToFILE"/>
+        <!-- <appender-ref ref="Log_ToDB"/> -->      
+    </root>
+    
+</log4j:configuration>

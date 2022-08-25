@@ -37,7 +37,7 @@ public class ProcessMsg {
      * 전송내용 :
      * SYSINCNET!@,01,LOCAL,,,,1024,768,001~C:010~,00000,001~ONOTEPAD.EXE|5.1.2600~,014,011,0,,1234
      * 
-     * @param ip  : 요청 IP
+     * @param SendIp  : 요청 IP
      * @param msg : 요청 메세지
      * 
      */
@@ -73,13 +73,13 @@ public class ProcessMsg {
         String sMem = value[12];
         String sErrCode = "";
 
-        // System.out.printf("System Code : %s \r\n", sSystemCode);
-        // System.out.printf("Total Process Count : %s \r\n",
+        // Log4j.log.printf("System Code : %s \r\n", sSystemCode);
+        // Log4j.log.printf("Total Process Count : %s \r\n",
         // Integer.parseInt(sProcessValue[0]));
         for (int i = 1; i < sProcessValue.length; i++) {
-            // System.out.printf("%s\r\n", sProcessValue[i]);
+            // Log4j.log.printf("%s\r\n", sProcessValue[i]);
             String[] sTemp = sProcessValue[i].split("\\|");
-            // System.out.printf("Process Name %s, Version : %s\r\n", sTemp[0], sTemp[1]);
+            // Log4j.log.printf("Process Name %s, Version : %s\r\n", sTemp[0], sTemp[1]);
             sAllPro = String.format("%s,%s", sAllPro, sTemp[0]);
             if (sTemp[0].substring(0, 1).equals("X"))
                 sNotPro = String.format("%s,%s", sNotPro, sTemp[0].substring(1));
@@ -95,15 +95,15 @@ public class ProcessMsg {
         if (!sNotPro.equals(""))
             sErrCode = String.format("%s,301", sErrCode);
 
-        // System.out.printf("Cpu : %s(%d) \r\n", sCpu, Integer.parseInt(sCpu));
-        // System.out.printf("Mem : %s(%d) \r\n", sMem, Integer.parseInt(sMem));
+        // Log4j.log.printf("Cpu : %s(%d) \r\n", sCpu, Integer.parseInt(sCpu));
+        // Log4j.log.printf("Mem : %s(%d) \r\n", sMem, Integer.parseInt(sMem));
 
-        // System.out.printf("Total Hdd Count : %d\r\n",
+        // Log4j.log.printf("Total Hdd Count : %d\r\n",
         // Integer.parseInt(sHddValue[0]));
 
         for (int i = 1; i < sHddValue.length; i++) {
             String[] sTemp = sHddValue[i].split(":");
-            /// System.out.printf("Drive Name : %s, Remain : %d\r\n", sTemp[0],
+            /// Log4j.log.printf("Drive Name : %s, Remain : %d\r\n", sTemp[0],
             /// Integer.parseInt(sTemp[1]));
             sHddStr = String.format("%s,%s:%d", sHddStr, sTemp[0], 100 - Integer.parseInt(sTemp[1]));
             // HDD 오류 처리
@@ -140,8 +140,8 @@ public class ProcessMsg {
                 + "',Mon_Process='" + sAllPro + "',Mon_Check='" + sErrCode + "' " +
                 "WHERE Mon_System='" + sSystemCode + "'";
 
-        System.out.printf("Query : %s\r\n", sSql);
-        // System.out.println(sNotPro);
+        Log4j.log.info("Query : %s\r\n" + sSql);
+        // Log4j.log.println(sNotPro);
         // String system_code, String cpu, String mem, String hdd, String process,
         // String alarm
         tbl_dash_Monitoring_update(sSystemCode, sCpu, sMem, sHddStr, sAllPro, sErrCode);
@@ -151,7 +151,7 @@ public class ProcessMsg {
                     + sSystemCode + "','" + now.format(dayformatter) + "','" +
                     now.format(timeformatter) + "','','" + (sErrValue.equals("301") ? sNotPro : "") + "','" + sErrValue
                     + "')";
-            System.out.printf("Query : %s\r\n", sSql);
+            Log4j.log.info("Query : %s\r\n" + sSql);
 
             tbl_dash_monlist_insert(sSystemCode, "", (sErrValue.equals("301") ? sNotPro : ""), sErrValue);
         }
@@ -160,7 +160,7 @@ public class ProcessMsg {
     /**
      * STA | 채널번호 | 장비 번호 | 내선번호 | 내용 | 오류 코드 |
      * 
-     * @param ip
+     * @param sSystemCode
      * @param msg
      */
     private void Rec(String sSystemCode, String msg) {
@@ -188,7 +188,7 @@ public class ProcessMsg {
         // now.format(timeformatter) + "','','" + (sErrValue.equals("301") ? sNotPro :
         // "") + "','" + sErrValue
         // + "')";
-        // System.out.printf("Query : %s\r\n", sSql);
+        // Log4j.log.printf("Query : %s\r\n", sSql);
 
         // tbl_dash_monlist_insert(sSystemCode, "", (sErrValue.equals("301") ? sNotPro :
         // ""), sErrValue);
@@ -275,9 +275,9 @@ public class ProcessMsg {
         try {
             long now = System.currentTimeMillis();
             long timeElapsed = now - UpdateTime_tbl_system_select_main_backup;
-            // System.out.printf("%s : %d\r\n","경과시간",timeElapsed);
-            // System.out.printf("%s : %d\r\n","지금시간",now);
-            // System.out.printf("%s : %d\r\n","요청시간",UpdateTime);
+            // Log4j.log.printf("%s : %d\r\n","경과시간",timeElapsed);
+            // Log4j.log.printf("%s : %d\r\n","지금시간",now);
+            // Log4j.log.printf("%s : %d\r\n","요청시간",UpdateTime);
             // 업데이트후 10분이 지나면 다시 자료를 로딩한다
             if (timeElapsed < ELAPSE_TIME_LIMIT && timeElapsed > 0)
                 return;
@@ -299,8 +299,8 @@ public class ProcessMsg {
                 MainServer += item.get("system_ip") + "|";
                 BackupServer += (item.get("backup_ip") == null ? "" : item.get("backup_ip")) + "|";
             }
-            System.out.println("Main Server : " + MainServer);
-            System.out.println("Backup Server : " + BackupServer);
+            Log4j.log.info("Main Server : " + MainServer);
+            Log4j.log.info("Backup Server : " + BackupServer);
 
             UpdateTime_tbl_system_select_main_backup = System.currentTimeMillis();
 
@@ -314,9 +314,9 @@ public class ProcessMsg {
         try {
             long now = System.currentTimeMillis();
             long timeElapsed = now - UpdateTime_tbl_dash_mon_code_rel_select;
-            // System.out.printf("%s : %d\r\n","경과시간",timeElapsed);
-            // System.out.printf("%s : %d\r\n","지금시간",now);
-            // System.out.printf("%s : %d\r\n","요청시간",UpdateTime);
+            // Log4j.log.printf("%s : %d\r\n","경과시간",timeElapsed);
+            // Log4j.log.printf("%s : %d\r\n","지금시간",now);
+            // Log4j.log.printf("%s : %d\r\n","요청시간",UpdateTime);
             // 업데이트후 10분이 지나면 다시 자료를 로딩한다
             if (timeElapsed < ELAPSE_TIME_LIMIT && timeElapsed > 0)
                 return;
@@ -347,7 +347,7 @@ public class ProcessMsg {
 
             for (String strKey : ErrorCode.keySet()) {
                 String strValue = ErrorCode.get(strKey).toString();
-                System.out.println(strKey + ":" + strValue);
+                Log4j.log.info(strKey + ":" + strValue);
             }
 
             UpdateTime_tbl_dash_mon_code_rel_select = System.currentTimeMillis();

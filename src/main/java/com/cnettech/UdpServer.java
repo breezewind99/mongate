@@ -9,13 +9,13 @@ import com.cnettech.util.Log4j;
 
 public class UdpServer extends Thread {
 
-    private DatagramSocket socket;
+    private final DatagramSocket socket;
     private boolean running;
-    private byte[] buf = new byte[256];
+    private final byte[] buf = new byte[256];
 
     public UdpServer(String sPort) throws SocketException {
         Log4j.log.info("---- UDP Server START ----");
-        System.out.printf("(Port : %s Waiting)\r\n", sPort);
+        Log4j.log.info(String.format("(Port : %s Waiting)\r\n", sPort));
         socket = new DatagramSocket(Integer.parseInt(sPort));
     }
 
